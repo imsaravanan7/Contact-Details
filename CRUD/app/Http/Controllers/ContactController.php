@@ -7,14 +7,12 @@ use App\Models\contact;
 
 class ContactController extends Controller
 {
+    //Form Showing in Frontend Page
     public function insert(){
         return view('InsertForm');
     }
     
-    public function show(){
-        $info=contact::get();
-        return view('ShowContact',compact('info')); 
-    }
+    //Collect the data from Form & send to the Model
     public function select(Request $req){
         $contactData=new contact();
         $contactData->Name=$req->name;
@@ -24,16 +22,27 @@ class ContactController extends Controller
         $contactData->save();
         return redirect('/ShowForm');
     }
+
+    //Show the Datas in Frontend Page
+    public function show(){
+        $info=contact::get();
+        return view('ShowContact',compact('info')); 
+    }
+
+    //Delete the Datas from selected id
     public function deletes($id){
         $deleteData=contact::find($id);
         $deleteData->delete();
         return redirect('/ShowForm');
     }
+
+    //Get the Id from selected id(update Id) 
     public function updates($id){
         $updateData=contact::find($id);
-        // return $updateData;
         return view('UpdateForm',compact('updateData'));
     }
+
+    //After changing datas & save the datas to database
     public function updateContact(Request $req,$id){
         $contactUpdate=contact::find($id);
         $contactUpdate->Name=$req->name;
